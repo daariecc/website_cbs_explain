@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
     <title>Пример: SQL Injection</title>
 
     <style>
@@ -20,7 +19,7 @@
 
         .container {
             max-width: 600px;
-            margin: 40px auto;
+            margin: 80px auto 40px auto;
             padding: 20px;
             position: relative;
         }
@@ -33,6 +32,7 @@
         p {
             line-height: 1.6;
             margin-bottom: 1rem;
+            font-size: 1rem;
         }
 
         button {
@@ -45,6 +45,7 @@
             font-weight: 500;
             margin-top: 1rem;
             transition: background 0.2s ease, transform 0.1s ease;
+            max-width: 100%;
         }
 
         button:hover {
@@ -127,13 +128,15 @@
         .scenario-title {
             margin-bottom: 2rem;
             text-align: center;
+            padding: 0 10px;
         }
 
         .scenario-title h1 {
             font-size: 1.8rem;
+            margin-bottom: 0.5rem;
         }
 
-        /* Панель навигации в левом верхнем углу (зафиксирована) */
+        /* Панель навигации */
         .step-nav {
             position: fixed;
             top: 20px;
@@ -149,25 +152,48 @@
             border-radius: 4px;
             background: #E5ECF8;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .step-nav button:hover {
             background: #D6E2F3;
         }
 
+        /* Стиль для активной кнопки */
+        .step-btn.active {
+            background: #C6DDF0;
+            font-weight: 600;
+            outline: 2px solid #AACBE3;
+        }
+
         @media (max-width: 600px) {
+            .container {
+                margin: 120px auto 20px auto;
+                padding: 10px;
+            }
+
+            .scenario-title h1 {
+                font-size: 1.4rem;
+            }
+
             .card {
                 padding: 20px;
             }
 
-            h1 {
-                font-size: 1.5rem;
+            .step-nav {
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                gap: 3px;
+                background: #F5F7FA;
+                padding: 5px 10px;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             }
 
-            .step-nav {
-                flex-direction: column;
-                top: 20px;
-                left: 20px;
+            .step-nav button {
+                padding: 5px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -176,7 +202,7 @@
 
 <!-- Навигация по шагам -->
 <div class="step-nav">
-    <button class="step-btn" data-step="input-screen">1</button>
+    <button class="step-btn active" data-step="input-screen">1</button>
     <button class="step-btn" data-step="normal-result">2</button>
     <button class="step-btn" data-step="injection-screen">3</button>
     <button class="step-btn" data-step="attack-result">4</button>
@@ -266,8 +292,10 @@
     const loginBtn = document.getElementById('loginBtn');
     const showAttackBtn = document.getElementById('showAttackBtn');
     const attackBtn = document.getElementById('attackBtn');
+    const stepButtons = document.querySelectorAll('.step-btn');
 
     function showScreen(screenId) {
+        // Переключаем экраны
         for (const id in screens) {
             if (id === screenId) {
                 screens[id].classList.remove('hidden');
@@ -275,6 +303,15 @@
                 screens[id].classList.add('hidden');
             }
         }
+
+        // Обновляем активную кнопку
+        stepButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.step === screenId) {
+                btn.classList.add('active');
+            }
+        });
+
         window.scrollTo(0,0);
     }
 
@@ -290,7 +327,6 @@
         showScreen('attack-result');
     });
 
-    const stepButtons = document.querySelectorAll('.step-btn');
     stepButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetStep = btn.dataset.step;
