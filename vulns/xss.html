@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>XSS — Учебный пример</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="top-bar__inner">
+      <h1 class="top-bar__title">XSS — Учебный пример</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="page-intro">
+      <p>Ниже демонстрируется, как работает Cross-Site Scripting (XSS).</p>
+    </div>
+
+    <!-- Пример XSS -->
+    <div class="card">
+      <h2>Пример XSS</h2>
+      <p>Предположим, что это поле позволяет комментировать запись, 
+         и введённый текст выводится «как есть», без экранирования.</p>
+
+      <!-- Поле ввода "комментария" -->
+      <input type="text" id="commentField" placeholder="Напишите комментарий..." />
+      <button id="submitComment" class="action-btn">Отправить</button>
+
+      <div class="info-box info-warning" style="margin-top:1rem;">
+        <strong>Что может произойти:</strong><br>
+        Если пользователь введёт что-то вроде
+        <div class="code-sample">
+          &lt;script&gt;alert("XSS!")&lt;/script&gt;
+        </div>
+        и система выведет это без фильтрации, в браузере сработает JavaScript.
+      </div>
+
+      <!-- Здесь будет отображаться "комментарий" -->
+      <div id="commentOutput" class="info-box" style="margin-top:1rem;">
+        <strong>Отображение комментария:</strong><br>
+        <div id="commentContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SQL Injection - Учебный пример</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- Верхняя плашка -->
+  <header class="top-bar">
+    <div class="top-bar__inner">
+      <h1 class="top-bar__title">SQL Injection — Учебный пример</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="page-intro">
+      <p>Пошаговый сценарий, демонстрирующий, как работает SQL Injection.</p>
+    </div>
+
+    <!-- Шаг 1 -->
+    <div id="input-screen" class="card visible">
+      <h2>Шаг 1: Обычный ввод</h2>
+      <p>
+        Представим, что у нас есть форма авторизации по имени пользователя. Разработчик 
+        не применил фильтрацию введённых данных. Попробуйте ввести обычное имя, например <em>john</em>.
+      </p>
+      <label class="label" for="usernameInput">Введите имя пользователя:</label>
+      <input type="text" id="usernameInput" placeholder="например, john"/>
+      <button id="loginBtn" class="action-btn">Войти</button>
+      <p class="note">
+        После этого мы покажем, что произойдёт при вредоносном вводе.
+      </p>
+    </div>
+
+    <!-- Шаг 2 -->
+    <div id="normal-result" class="card hidden">
+      <h2>Шаг 2: Нормальный результат</h2>
+      <p>
+        Если пользователь "john" существует в базе, вы авторизуетесь без проблем.
+      </p>
+      <div class="info-box info-normal">
+        <strong>Результат:</strong><br>
+        Добро пожаловать, john!
+      </div>
+      <div class="info-box info-warning" style="margin-top:1.5rem;">
+        <strong>Что произошло без инъекции:</strong><br>
+        Запрос к базе данных:
+        <div class="code-sample">
+          SELECT * FROM users WHERE username='john'
+        </div>
+        Здесь всё выглядит безопасно, 
+        так как пользовательский ввод "john" не влияет на структуру запроса.
+      </div>
+      <button id="showAttackBtn" class="action-btn">
+        Перейти к вредоносному вводу
+      </button>
+    </div>
+
+    <!-- Шаг 3 -->
+    <div id="injection-screen" class="card hidden">
+      <h2>Шаг 3: Вредоносный ввод</h2>
+      <p>Злоумышленник вводит не просто имя, а фрагмент SQL-кода:</p>
+      <div class="code-sample">
+        john' OR '1'='1
+      </div>
+      <input type="text" id="evilInput" value="john' OR '1'='1"/>
+      <button id="attackBtn" class="action-btn">Войти</button>
+      <p class="note">
+        Нажмите «Войти», чтобы увидеть последствия.
+      </p>
+    </div>
+
+    <!-- Шаг 4 -->
+    <div id="attack-result" class="card hidden">
+      <h2>Шаг 4: Результат SQL Injection</h2>
+      <div class="info-box info-critical">
+        <strong>Критическая ситуация:</strong><br>
+        Запрос теперь выглядит так:
+        <div class="code-sample">
+          SELECT * FROM users WHERE username='john' OR '1'='1'
+        </div>
+        Условие '1'='1' всегда истинно, 
+        поэтому возвращаются все записи из базы, а не только «john».
+      </div>
+      <div class="info-box info-solution" style="margin-top:1.5rem;">
+        <strong>Решение:</strong><br>
+        Используйте параметризованные запросы, ORM-библиотеки 
+        или фильтрацию ввода, чтобы пользовательские данные не могли 
+        менять структуру SQL-запроса.
+      </div>
+    </div>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>

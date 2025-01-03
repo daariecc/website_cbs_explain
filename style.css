@@ -1,16 +1,17 @@
 /* style.css */
 
-/* Сброс некоторых отступов/полей */
+/* Сброс отступов/полей */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* Шрифты и цвета */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, sans-serif;
-  background-color: #FEFFFF; /* Основной белый */
-  color: #333;              /* Цвет текста */
+  background-color: #FEFFFF; /* Белый */
+  color: #333;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,7 +21,8 @@ body {
 .top-bar {
   width: 100%;
   background-color: #582FF5; /* яркий фиолетовый */
-  padding: 10px 0;
+  padding: 12px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .top-bar__inner {
@@ -35,50 +37,15 @@ body {
   font-size: 1.6rem;
 }
 
-/* Навигация слева (fix) */
-.step-nav {
-  position: fixed;
-  top: 80px; /* чуть ниже верхней плашки */
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 999;
-}
-
-/* Кнопки навигации */
-.step-btn {
-  background: #F88DD5; /* яркий розовый */
-  color: #1F1E1E;      /* почти чёрный текст */
-  border: none;
-  padding: 8px 12px;
-  font-size: 0.95rem;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.step-btn:hover {
-  background: #e671c3; /* немного темнее розового */
-}
-
-/* Активная кнопка выделяется неоновым цветом + жирнее */
-.step-btn.active {
-  background: #E0F541;  /* неоновый зелёный */
-  color: #333;
-  font-weight: 600;
-}
-
-/* Основной контейнер для контента */
+/* Основной контейнер */
 .container {
-  max-width: 800px;
+  max-width: 900px;
   width: 100%;
-  margin: 100px auto 40px auto;
+  margin: 60px auto 40px auto;
   padding: 0 20px;
 }
 
-/* Вступительный текст под шапкой */
+/* Вступительный текст */
 .page-intro {
   margin-bottom: 2rem;
   font-size: 1.1rem;
@@ -94,17 +61,21 @@ body {
   margin-bottom: 2rem;
 }
 
+/* Карточки уязвимостей на главной */
+.vuln-card h2 {
+  margin-bottom: 0.5rem;
+}
+
 .hidden {
   display: none;
 }
-
 .visible {
   display: block;
 }
 
-/* Общий стиль для кнопок внутри карточек */
+/* Кнопка действия */
 .action-btn {
-  background: #F88DD5;
+  background: #F88DD5; /* яркий розовый */
   color: #333;
   border: none;
   padding: 10px 20px;
@@ -120,14 +91,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* Подписи к полям */
-.label {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  display: block;
-  color: #1F1E1E;
-}
-
 /* Поля ввода */
 input[type="text"] {
   width: 100%;
@@ -136,6 +99,14 @@ input[type="text"] {
   border-radius: 6px;
   margin-bottom: 1rem;
   font-size: 1rem;
+}
+
+/* Подписи к полям */
+.label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #1F1E1E;
 }
 
 /* Подсказки */
@@ -154,9 +125,8 @@ input[type="text"] {
   font-size: 0.95rem;
 }
 
-/* Разные цвета для разных кейсов */
 .info-normal {
-  background: #E7F9E7; /* слегка зелёный */
+  background: #E7F9E7; 
   border: 1px solid #BDE8BD;
 }
 .info-warning {
@@ -172,7 +142,7 @@ input[type="text"] {
   border: 1px solid #BDE8BD;
 }
 
-/* Блоки кода */
+/* Кодовые фрагменты */
 .code-sample {
   background: #F0F0F0;
   font-family: Menlo, Consolas, monospace;
@@ -183,24 +153,19 @@ input[type="text"] {
   overflow-x: auto;
 }
 
-/* Адаптивность под мобильные */
+/* Адаптивность */
 @media (max-width: 600px) {
   .top-bar__title {
     font-size: 1.3rem;
   }
-
   .container {
-    margin-top: 120px; /* чуть больше отступа, чтобы не налезать на шапку */
+    margin-top: 80px;
     padding: 0 10px;
   }
-
-  .step-nav {
-    top: 60px;
-    left: 10px;
-    flex-direction: row;
+  .card {
+    padding: 20px;
   }
-  .step-btn {
-    padding: 6px 8px;
-    font-size: 0.8rem;
+  .page-intro {
+    font-size: 1rem;
   }
 }
