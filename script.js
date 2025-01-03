@@ -1,34 +1,43 @@
 // script.js
 
-// Собираем экраны (если есть на странице)
-const screens = {
-  'input-screen': document.getElementById('input-screen'),
-  'normal-result': document.getElementById('normal-result'),
-  'injection-screen': document.getElementById('injection-screen'),
-  'attack-result': document.getElementById('attack-result')
-};
+// Собираем ссылки на экраны
+const inputScreen = document.getElementById('input-screen');
+const normalResult = document.getElementById('normal-result');
+const injectionScreen = document.getElementById('injection-screen');
+const attackResult = document.getElementById('attack-result');
 
 // Кнопки внутри сценария
 const loginBtn = document.getElementById('loginBtn');
 const showAttackBtn = document.getElementById('showAttackBtn');
 const attackBtn = document.getElementById('attackBtn');
 
-// Кнопки шагов (меню сверху)
+// Кнопки навигации по шагам
 const stepButtons = document.querySelectorAll('.step-btn');
 
-// Функция переключения экранов
+// Чтобы переключать экраны удобнее, соберём их в объект
+const screens = {
+  'input-screen': inputScreen,
+  'normal-result': normalResult,
+  'injection-screen': injectionScreen,
+  'attack-result': attackResult
+};
+
+// Функция переключения экрана
 function showScreen(screenId) {
-  // Скрываем всё, показываем нужное
-  for (const id in screens) {
-    if (screens[id]) {
-      screens[id].classList.add('hidden');
+  // Скрываем все экраны
+  for (const key in screens) {
+    if (screens[key]) {
+      screens[key].classList.add('hidden');
+      screens[key].classList.remove('visible');
     }
   }
+  // Показываем нужный
   if (screens[screenId]) {
     screens[screenId].classList.remove('hidden');
+    screens[screenId].classList.add('visible');
   }
 
-  // Обновляем активное состояние кнопок
+  // Обновляем "active" у кнопок
   stepButtons.forEach(btn => {
     btn.classList.remove('active');
     if (btn.dataset.step === screenId) {
@@ -36,6 +45,7 @@ function showScreen(screenId) {
     }
   });
 
+  // Скроллим наверх
   window.scrollTo(0,0);
 }
 
@@ -79,7 +89,7 @@ if (commentFieldSafe && submitCommentSafe && commentContentSafe) {
 //       тут же можно добавить логику по переключению шагов и т.д. -----
 
 
-// Обработчики для внутренних кнопок
+// Вешаем обработчики на кнопки внутри шагов
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
     showScreen('normal-result');
@@ -96,12 +106,10 @@ if (attackBtn) {
   });
 }
 
-// Обработчики для меню шагов (1, 2, 3, 4)
-if (stepButtons) {
-  stepButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetStep = btn.dataset.step;
-      showScreen(targetStep);
-    });
+// Вешаем обработчики на кнопки меню (1,2,3,4)
+stepButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetStep = btn.dataset.step;
+    showScreen(targetStep);
   });
-}
+});

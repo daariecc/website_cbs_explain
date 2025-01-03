@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SQL Injection — Учебный пример</title>
+  <!-- Путь к вашему файлу стилей -->
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -15,12 +16,16 @@
     </div>
   </header>
 
-  <!-- Меню навигации по шагам + кнопка "На главную" -->
+  <!-- Навигация (с подложкой sub-nav) -->
   <div class="sub-nav">
+    <!-- Кнопка "На главную" -->
     <button class="back-btn" onclick="location.href='../index.html'">
       На главную
     </button>
+
+    <!-- Кнопки переключения шагов -->
     <div class="step-nav">
+      <!-- Обратите внимание на data-step -->
       <button class="step-btn active" data-step="input-screen">1</button>
       <button class="step-btn" data-step="normal-result">2</button>
       <button class="step-btn" data-step="injection-screen">3</button>
@@ -33,7 +38,8 @@
       <p>Пошаговый сценарий, демонстрирующий, как работает SQL Injection.</p>
     </div>
 
-    <!-- Шаг 1 -->
+    <!-- ШАГ 1 -->
+    <!-- Задаём класс visible для первого шага (остальные hidden) -->
     <div id="input-screen" class="card visible">
       <h2>Шаг 1: Обычный ввод</h2>
       <p>
@@ -48,31 +54,29 @@
       </p>
     </div>
 
-    <!-- Шаг 2 -->
+    <!-- ШАГ 2 -->
     <div id="normal-result" class="card hidden">
       <h2>Шаг 2: Нормальный результат</h2>
-      <p>
-        Если пользователь "john" существует в базе, вы авторизуетесь без проблем.
-      </p>
+      <p>Если пользователь "john" существует в базе, вы авторизуетесь без проблем.</p>
       <div class="info-box info-normal">
         <strong>Результат:</strong><br>
         Добро пожаловать, john!
       </div>
       <div class="info-box info-warning" style="margin-top:1.5rem;">
         <strong>Что произошло без инъекции:</strong><br>
-        Запрос к базе данных:
+        Запрос к базе данных был:
         <div class="code-sample">
           SELECT * FROM users WHERE username='john'
         </div>
         Здесь всё выглядит безопасно, 
-        так как пользовательский ввод "john" не влияет на структуру запроса.
+        так как пользовательский ввод "john" не меняет структуру запроса.
       </div>
       <button id="showAttackBtn" class="action-btn">
         Перейти к вредоносному вводу
       </button>
     </div>
 
-    <!-- Шаг 3 -->
+    <!-- ШАГ 3 -->
     <div id="injection-screen" class="card hidden">
       <h2>Шаг 3: Вредоносный ввод</h2>
       <p>Злоумышленник вводит не просто имя, а фрагмент SQL-кода:</p>
@@ -86,7 +90,7 @@
       </p>
     </div>
 
-    <!-- Шаг 4 -->
+    <!-- ШАГ 4 -->
     <div id="attack-result" class="card hidden">
       <h2>Шаг 4: Результат SQL Injection</h2>
       <div class="info-box info-critical">
@@ -107,6 +111,7 @@
     </div>
   </div>
 
+  <!-- Подключаем скрипт переключения шагов -->
   <script src="../script.js"></script>
 </body>
 </html>
