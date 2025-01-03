@@ -39,6 +39,46 @@ function showScreen(screenId) {
   window.scrollTo(0,0);
 }
 
+// script.js
+
+// ----- XSS: Небезопасный ввод -----
+const commentField = document.getElementById('commentField');
+const submitComment = document.getElementById('submitComment');
+const commentContent = document.getElementById('commentContent');
+
+if (commentField && submitComment && commentContent) {
+  // Небезопасно выводим "как есть"
+  submitComment.addEventListener('click', () => {
+    commentContent.innerHTML = commentField.value;  // Специально не экранируем
+  });
+}
+
+
+// ----- XSS: Безопасный ввод -----
+const commentFieldSafe = document.getElementById('commentFieldSafe');
+const submitCommentSafe = document.getElementById('submitCommentSafe');
+const commentContentSafe = document.getElementById('commentContentSafe');
+
+if (commentFieldSafe && submitCommentSafe && commentContentSafe) {
+  // Безопасно экранируем спецсимволы
+  submitCommentSafe.addEventListener('click', () => {
+    const userInput = commentFieldSafe.value;
+    // Простейшая экранизация
+    const safeOutput = userInput
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+    // Выводим как текст
+    commentContentSafe.innerHTML = safeOutput;
+  });
+}
+
+
+// ----- Если есть SQL Injection или другие уязвимости, 
+//       тут же можно добавить логику по переключению шагов и т.д. -----
+
+
 // Обработчики для внутренних кнопок
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {

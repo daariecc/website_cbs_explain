@@ -212,6 +212,33 @@ input[type="text"] {
   outline: 2px solid #bcd821;
 }
 
+/* Пример доп. стилей, если ещё не было */
+.sub-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: #FEFFFF;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.back-btn {
+  background: #E0F541; /* неоновый зелёный */
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.back-btn:hover {
+  background: #c8e52c;
+  transform: translateY(-1px);
+}
+
+
 /* Адаптивность */
 @media (max-width: 600px) {
   .sub-nav {

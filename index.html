@@ -15,46 +15,39 @@
     </div>
   </header>
 
-  <!-- Основной контейнер с карточками уязвимостей -->
   <div class="container">
     <div class="page-intro">
-      <p>
-        Ниже представлены распространённые уязвимости веб-приложений. Нажмите на «Подробнее», 
-        чтобы узнать об уязвимости более детально и увидеть пошаговый сценарий атаки.
-      </p>
+      <p>Ниже перечислены демо-примеры уязвимостей. Выберите нужный вам сценарий.</p>
     </div>
 
-    <!-- Карточка для SQL Injection -->
+    <!-- Пример: SQL Injection, переходит на sql_injection.html или разбивку на несколько страниц -->
     <div class="card vuln-card">
       <h2>SQL Injection</h2>
-      <p>
-        Возникает, когда данные пользователя напрямую вставляются в SQL-запрос 
-        без должной фильтрации. Это позволяет злоумышленнику изменять логику запроса.
-      </p>
-      <button class="action-btn"
-              onclick="location.href='vulns/sql_injection.html'">
+      <p>Демонстрация классической уязвимости в случае отсутствия фильтрации и параметризации SQL-запросов.</p>
+      <button class="action-btn" onclick="location.href='vulns/sql_injection.html'">
         Подробнее
       </button>
     </div>
 
-    <!-- Карточка для XSS -->
+    <!-- XSS: если хотим показать два «шага» (небезопасный / безопасный) — 
+         можно просто сделать две кнопки для каждой «страницы/шага». -->
     <div class="card vuln-card">
       <h2>XSS (Cross-Site Scripting)</h2>
       <p>
-        Уязвимость, позволяющая выполнять чужой JavaScript-код в браузере жертвы. 
-        Чаще всего возникает при некорректном выводе пользовательских данных в HTML.
+        Демонстрация внедрения пользовательского JS-кода при отсутствии экранирования в HTML.
       </p>
-      <button class="action-btn"
-              onclick="location.href='vulns/xss.html'">
-        Подробнее
+      <p><strong>Шаг 1:</strong> небезопасный ввод</p>
+      <button class="action-btn" onclick="location.href='vulns/xss_insecure.html'">
+        Перейти к Шагу 1
+      </button>
+      <p style="margin-top:1rem;"><strong>Шаг 2:</strong> безопасный ввод</p>
+      <button class="action-btn" onclick="location.href='vulns/xss_secure.html'">
+        Перейти к Шагу 2
       </button>
     </div>
 
-    <!-- При необходимости здесь добавлять другие блоки уязвимостей (CSRF, Path Traversal и т.д.) -->
-
   </div>
 
-  <!-- Подключаем скрипт (если нужно что-то для главной) -->
   <script src="script.js"></script>
 </body>
 </html>
