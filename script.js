@@ -1,51 +1,67 @@
 // script.js
 
-// ----- ЛОГИКА ДЛЯ SQL INJECTION -----
-// Получаем элементы (если их нет на странице, код можно не выполнять)
-const inputScreen = document.getElementById('input-screen');
-const normalResult = document.getElementById('normal-result');
-const injectionScreen = document.getElementById('injection-screen');
-const attackResult = document.getElementById('attack-result');
+// Собираем экраны (если есть на странице)
+const screens = {
+  'input-screen': document.getElementById('input-screen'),
+  'normal-result': document.getElementById('normal-result'),
+  'injection-screen': document.getElementById('injection-screen'),
+  'attack-result': document.getElementById('attack-result')
+};
 
+// Кнопки внутри сценария
 const loginBtn = document.getElementById('loginBtn');
 const showAttackBtn = document.getElementById('showAttackBtn');
 const attackBtn = document.getElementById('attackBtn');
 
+// Кнопки шагов (меню сверху)
+const stepButtons = document.querySelectorAll('.step-btn');
+
+// Функция переключения экранов
+function showScreen(screenId) {
+  // Скрываем всё, показываем нужное
+  for (const id in screens) {
+    if (screens[id]) {
+      screens[id].classList.add('hidden');
+    }
+  }
+  if (screens[screenId]) {
+    screens[screenId].classList.remove('hidden');
+  }
+
+  // Обновляем активное состояние кнопок
+  stepButtons.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.step === screenId) {
+      btn.classList.add('active');
+    }
+  });
+
+  window.scrollTo(0,0);
+}
+
+// Обработчики для внутренних кнопок
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
-    if (inputScreen) inputScreen.classList.add('hidden');
-    if (normalResult) normalResult.classList.remove('hidden');
-    window.scrollTo(0,0);
+    showScreen('normal-result');
   });
 }
-
 if (showAttackBtn) {
   showAttackBtn.addEventListener('click', () => {
-    if (normalResult) normalResult.classList.add('hidden');
-    if (injectionScreen) injectionScreen.classList.remove('hidden');
-    window.scrollTo(0,0);
+    showScreen('injection-screen');
   });
 }
-
 if (attackBtn) {
   attackBtn.addEventListener('click', () => {
-    if (injectionScreen) injectionScreen.classList.add('hidden');
-    if (attackResult) attackResult.classList.remove('hidden');
-    window.scrollTo(0,0);
+    showScreen('attack-result');
   });
 }
 
-// ----- ЛОГИКА ДЛЯ XSS -----
-const commentField = document.getElementById('commentField');
-const submitComment = document.getElementById('submitComment');
-const commentContent = document.getElementById('commentContent');
-
-if (submitComment) {
-  submitComment.addEventListener('click', () => {
-    // Предупреждение: небезопасно вставлять HTML напрямую!
-    // Для демонстрации XSS намеренно делаем innerHTML вместо textContent.
-    if (commentContent && commentField) {
-      commentContent.innerHTML = commentField.value;
-    }
+// Обработчики для меню шагов (1, 2, 3, 4)
+if (stepButtons) {
+  stepButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetStep = btn.dataset.step;
+      showScreen(targetStep);
+    });
   });
 }
