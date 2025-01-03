@@ -1,0 +1,206 @@
+/* style.css */
+
+/* Сброс некоторых отступов/полей */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, sans-serif;
+  background-color: #FEFFFF; /* Основной белый */
+  color: #333;              /* Цвет текста */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Верхняя плашка */
+.top-bar {
+  width: 100%;
+  background-color: #582FF5; /* яркий фиолетовый */
+  padding: 10px 0;
+}
+
+.top-bar__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.top-bar__title {
+  color: #FEFFFF; /* контраст с фиолетовым */
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+/* Навигация слева (fix) */
+.step-nav {
+  position: fixed;
+  top: 80px; /* чуть ниже верхней плашки */
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 999;
+}
+
+/* Кнопки навигации */
+.step-btn {
+  background: #F88DD5; /* яркий розовый */
+  color: #1F1E1E;      /* почти чёрный текст */
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.step-btn:hover {
+  background: #e671c3; /* немного темнее розового */
+}
+
+/* Активная кнопка выделяется неоновым цветом + жирнее */
+.step-btn.active {
+  background: #E0F541;  /* неоновый зелёный */
+  color: #333;
+  font-weight: 600;
+}
+
+/* Основной контейнер для контента */
+.container {
+  max-width: 800px;
+  width: 100%;
+  margin: 100px auto 40px auto;
+  padding: 0 20px;
+}
+
+/* Вступительный текст под шапкой */
+.page-intro {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  color: #1F1E1E;
+}
+
+/* Карточки */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 30px;
+  margin-bottom: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+/* Общий стиль для кнопок внутри карточек */
+.action-btn {
+  background: #F88DD5;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-top: 1rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.action-btn:hover {
+  background: #e671c3;
+  transform: translateY(-1px);
+}
+
+/* Подписи к полям */
+.label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #1F1E1E;
+}
+
+/* Поля ввода */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Подсказки */
+.note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Информационные блоки */
+.info-box {
+  margin-top: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+/* Разные цвета для разных кейсов */
+.info-normal {
+  background: #E7F9E7; /* слегка зелёный */
+  border: 1px solid #BDE8BD;
+}
+.info-warning {
+  background: #FFF9D9; 
+  border: 1px solid #E8E0A5;
+}
+.info-critical {
+  background: #FEE9E9; 
+  border: 1px solid #F7CACA;
+}
+.info-solution {
+  background: #E7F9E7; 
+  border: 1px solid #BDE8BD;
+}
+
+/* Блоки кода */
+.code-sample {
+  background: #F0F0F0;
+  font-family: Menlo, Consolas, monospace;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+/* Адаптивность под мобильные */
+@media (max-width: 600px) {
+  .top-bar__title {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    margin-top: 120px; /* чуть больше отступа, чтобы не налезать на шапку */
+    padding: 0 10px;
+  }
+
+  .step-nav {
+    top: 60px;
+    left: 10px;
+    flex-direction: row;
+  }
+  .step-btn {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+}

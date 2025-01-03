@@ -1,339 +1,108 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Пример: SQL Injection</title>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif;
-            background: #F5F7FA;
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 80px auto 40px auto;
-            padding: 20px;
-            position: relative;
-        }
-
-        h1, h2 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-
-        button {
-            background: #E5ECF8;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 6px;
-            font-weight: 500;
-            margin-top: 1rem;
-            transition: background 0.2s ease, transform 0.1s ease;
-            max-width: 100%;
-        }
-
-        button:hover {
-            background: #D6E2F3;
-            transform: translateY(-1px);
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            padding: 30px;
-            margin-bottom: 2rem;
-        }
-
-        .info-box {
-            margin-top: 1rem;
-            padding: 10px;
-            border-radius: 6px;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .info-normal {
-            background: #E7F9E7; 
-            border: 1px solid #BDE8BD;
-        }
-
-        .info-warning {
-            background: #FFF9D9; 
-            border: 1px solid #E8E0A5;
-        }
-
-        .info-critical {
-            background: #FEE9E9; 
-            border: 1px solid #F7CACA;
-        }
-
-        .info-solution {
-            background: #E7F9E7; 
-            border: 1px solid #BDE8BD;
-        }
-
-        .label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            font-family: inherit;
-        }
-
-        .note {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .code-sample {
-            background: #F0F0F0;
-            font-family: Menlo, Consolas, monospace;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            overflow-x: auto;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .scenario-title {
-            margin-bottom: 2rem;
-            text-align: center;
-            padding: 0 10px;
-        }
-
-        .scenario-title h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Панель навигации */
-        .step-nav {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            gap: 5px;
-            z-index: 999;
-        }
-
-        .step-nav button {
-            padding: 5px 10px;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            background: #E5ECF8;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .step-nav button:hover {
-            background: #D6E2F3;
-        }
-
-        /* Стиль для активной кнопки */
-        .step-btn.active {
-            background: #C6DDF0;
-            font-weight: 600;
-            outline: 2px solid #AACBE3;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                margin: 120px auto 20px auto;
-                padding: 10px;
-            }
-
-            .scenario-title h1 {
-                font-size: 1.4rem;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .step-nav {
-                top: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                gap: 3px;
-                background: #F5F7FA;
-                padding: 5px 10px;
-                border-radius: 8px;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            }
-
-            .step-nav button {
-                padding: 5px;
-                font-size: 0.8rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SQL Injection Demo</title>
+  <!-- Подключаем стили -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
+  <!-- Верхняя плашка (как на референсе), фиолетовая -->
+  <header class="top-bar">
+    <div class="top-bar__inner">
+      <!-- Можно добавить логотип или название -->
+      <h1 class="top-bar__title">Учебный пример: SQL Injection</h1>
+    </div>
+  </header>
 
-<!-- Навигация по шагам -->
-<div class="step-nav">
+  <!-- Навигация по шагам (закрепим слева) -->
+  <div class="step-nav">
     <button class="step-btn active" data-step="input-screen">1</button>
     <button class="step-btn" data-step="normal-result">2</button>
     <button class="step-btn" data-step="injection-screen">3</button>
     <button class="step-btn" data-step="attack-result">4</button>
-</div>
+  </div>
 
-<div class="container">
+  <!-- Основной контейнер -->
+  <div class="container">
 
-    <!-- Заголовок сценария -->
-    <div class="scenario-title">
-        <h1>Пример уязвимости: SQL Injection</h1>
-        <p>Рассмотрим, как работает SQL Injection на наглядном примере.</p>
+    <!-- Подзаголовок (под верхней плашкой) -->
+    <div class="page-intro">
+      <p>Рассмотрим, как работает SQL Injection на наглядном примере.</p>
     </div>
 
-    <!-- Экран ввода -->
-    <div id="input-screen" class="card">
-        <h2>Шаг 1: Обычный ввод</h2>
-        <p>
-            Допустим, у нас есть форма авторизации по имени пользователя. Разработчик не применил фильтрацию введённых данных.  
-            Сначала введите обычное имя, например <em>john</em>.
-        </p>
-        <label class="label" for="usernameInput">Введите имя пользователя:</label>
-        <input type="text" id="usernameInput" placeholder="например, john"/>
-        <button id="loginBtn">Войти</button>
-        <p class="note">После этого мы покажем, что произойдёт при вредоносном вводе.</p>
+    <!-- Экран 1: Обычный ввод -->
+    <div id="input-screen" class="card visible">
+      <h2>Шаг 1: Обычный ввод</h2>
+      <p>
+        Допустим, у нас есть форма авторизации по имени пользователя. Разработчик не применил фильтрацию введённых данных.  
+        Сначала введите обычное имя, например <em>john</em>.
+      </p>
+      <label class="label" for="usernameInput">Введите имя пользователя:</label>
+      <input type="text" id="usernameInput" placeholder="например, john"/>
+      <button id="loginBtn" class="action-btn">Войти</button>
+      <p class="note">
+        После этого мы покажем, что произойдёт при вредоносном вводе.
+      </p>
     </div>
 
-    <!-- Экран нормального результата -->
+    <!-- Экран 2: Нормальный результат -->
     <div id="normal-result" class="card hidden">
-        <h2>Шаг 2: Нормальный результат</h2>
-        <p>Если пользователь "john" существует в базе, вы авторизуетесь без проблем.</p>
-        <div class="info-box info-normal">
-            <strong>Результат:</strong><br>
-            Добро пожаловать, john!
+      <h2>Шаг 2: Нормальный результат</h2>
+      <p>Если пользователь "john" существует в базе, вы авторизуетесь без проблем.</p>
+      <div class="info-box info-normal">
+        <strong>Результат:</strong><br>
+        Добро пожаловать, john!
+      </div>
+      <div class="info-box info-warning" style="margin-top:1.5rem;">
+        <strong>Что произошло без инъекции:</strong><br>
+        Запрос к базе данных был:
+        <div class="code-sample">
+          SELECT * FROM users WHERE username='john'
         </div>
-
-        <div class="info-box info-warning" style="margin-top:1.5rem;">
-            <strong>Что произошло без инъекции:</strong><br>
-            Запрос к базе данных был:
-            <div class="code-sample">
-                SELECT * FROM users WHERE username='john'
-            </div>
-            Здесь всё выглядит безопасно, так как пользовательский ввод "john" не меняет логику запроса.
-        </div>
-        <button class="toggle-attack" id="showAttackBtn">Перейти к вредоносному вводу</button>
+        Здесь всё выглядит безопасно, так как пользовательский ввод "john" не меняет логику запроса.
+      </div>
+      <button id="showAttackBtn" class="action-btn">Перейти к вредоносному вводу</button>
     </div>
 
-    <!-- Экран с вводом вредоносного кода -->
+    <!-- Экран 3: Ввод вредоносного кода -->
     <div id="injection-screen" class="card hidden">
-        <h2>Шаг 3: Вредоносный ввод</h2>
-        <p>Злоумышленник вводит не просто имя, а SQL-код:</p>
-        <div class="code-sample">john' OR '1'='1</div>
-        <input type="text" id="evilInput" value="john' OR '1'='1"/>
-        <button id="attackBtn">Войти</button>
-        <p class="note">Нажмите "Войти", чтобы увидеть последствия.</p>
+      <h2>Шаг 3: Вредоносный ввод</h2>
+      <p>Злоумышленник вводит не просто имя, а SQL-код:</p>
+      <div class="code-sample">
+        john' OR '1'='1
+      </div>
+      <input type="text" id="evilInput" value="john' OR '1'='1"/>
+      <button id="attackBtn" class="action-btn">Войти</button>
+      <p class="note">
+        Нажмите "Войти", чтобы увидеть последствия.
+      </p>
     </div>
 
-    <!-- Экран результата при SQL Injection -->
+    <!-- Экран 4: Результат SQL Injection -->
     <div id="attack-result" class="card hidden">
-        <h2>Шаг 4: Результат SQL Injection</h2>
-        <div class="info-box info-critical">
-            <strong>Критическая ситуация:</strong><br>
-            Злоумышленник изменил логику запроса так, что теперь он выглядит следующим образом:
-            <div class="code-sample">
-                SELECT * FROM users WHERE username='john' OR '1'='1'
-            </div>
-            Введённый код добавил условие '1'='1', которое всегда истинно.  
-            Это означает, что запрос вернёт все записи из базы, а не только для конкретного пользователя.
+      <h2>Шаг 4: Результат SQL Injection</h2>
+      <div class="info-box info-critical">
+        <strong>Критическая ситуация:</strong><br>
+        Злоумышленник изменил логику запроса так, что теперь он выглядит следующим образом:
+        <div class="code-sample">
+          SELECT * FROM users WHERE username='john' OR '1'='1'
         </div>
-
-        <div class="info-box info-solution" style="margin-top:1.5rem;">
-            <strong>Решение:</strong><br>
-            Чтобы избежать подобных ситуаций, нужно использовать параметризованные запросы, ORM-библиотеки или фильтрацию ввода,  
-            чтобы данные пользователя не могли менять структуру SQL-запроса.
-        </div>
+        Введённый код добавил условие '1'='1', которое всегда истинно.  
+        Это означает, что запрос вернёт все записи из базы, а не только для конкретного пользователя.
+      </div>
+      <div class="info-box info-solution" style="margin-top:1.5rem;">
+        <strong>Решение:</strong><br>
+        Чтобы избежать подобных ситуаций, нужно использовать параметризованные запросы, ORM-библиотеки или фильтрацию ввода,  
+        чтобы данные пользователя не могли менять структуру SQL-запроса.
+      </div>
     </div>
 
-</div>
+  </div> <!-- /container -->
 
-<script>
-    const screens = {
-        'input-screen': document.getElementById('input-screen'),
-        'normal-result': document.getElementById('normal-result'),
-        'injection-screen': document.getElementById('injection-screen'),
-        'attack-result': document.getElementById('attack-result')
-    };
-
-    const loginBtn = document.getElementById('loginBtn');
-    const showAttackBtn = document.getElementById('showAttackBtn');
-    const attackBtn = document.getElementById('attackBtn');
-    const stepButtons = document.querySelectorAll('.step-btn');
-
-    function showScreen(screenId) {
-        // Переключаем экраны
-        for (const id in screens) {
-            if (id === screenId) {
-                screens[id].classList.remove('hidden');
-            } else {
-                screens[id].classList.add('hidden');
-            }
-        }
-
-        // Обновляем активную кнопку
-        stepButtons.forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.step === screenId) {
-                btn.classList.add('active');
-            }
-        });
-
-        window.scrollTo(0,0);
-    }
-
-    loginBtn.addEventListener('click', () => {
-        showScreen('normal-result');
-    });
-
-    showAttackBtn.addEventListener('click', () => {
-        showScreen('injection-screen');
-    });
-
-    attackBtn.addEventListener('click', () => {
-        showScreen('attack-result');
-    });
-
-    stepButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetStep = btn.dataset.step;
-            showScreen(targetStep);
-        });
-    });
-</script>
-
+  <!-- Подключаем JS-логику -->
+  <script src="script.js"></script>
 </body>
 </html>
