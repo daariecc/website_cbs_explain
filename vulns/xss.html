@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XSS — Учебный пример</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- Верхняя плашка -->
+  <header class="top-bar">
+    <div class="top-bar__inner">
+      <h1 class="top-bar__title">XSS — Учебный пример</h1>
+    </div>
+  </header>
+
+  <!-- Навигация: "На главную" + кнопки шагов 1..2 -->
+  <div class="sub-nav">
+    <button class="back-btn" onclick="location.href='../index.html'">
+      На главную
+    </button>
+    <div class="step-nav">
+      <button class="step-btn active" data-step="xss-step1">1</button>
+      <button class="step-btn" data-step="xss-step2">2</button>
+    </div>
+  </div>
+
+  <div class="container fade-in">
+    <div class="page-intro">
+      <p>Демонстрация внедрения чужого JavaScript-кода (XSS).</p>
+    </div>
+
+    <!-- Шаг 1: Небезопасный ввод -->
+    <div id="xss-step1" class="card visible fade-up">
+      <h2>Шаг 1: Небезопасный ввод</h2>
+      <p>Предположим, что комментарий выводится «как есть» (innerHTML).</p>
+      <input type="text" id="commentFieldUnsafe" placeholder="Ваш комментарий..."/>
+      <button id="submitCommentUnsafe" class="action-btn">Отправить</button>
+
+      <div class="info-box info-warning" style="margin-top:1rem;">
+        <strong>Что может произойти:</strong>
+        <div class="code-sample">
+          &lt;script&gt;alert("XSS!")&lt;/script&gt;
+        </div>
+        Если браузер увидит это без экранирования, код выполнится.
+      </div>
+
+      <h3 style="margin-top:1.5rem;">Вывод комментария:</h3>
+      <div id="commentOutputUnsafe" class="info-box" style="margin-top:0.5rem;">
+        <div id="commentContentUnsafe"></div>
+      </div>
+    </div>
+
+    <!-- Шаг 2: Безопасный ввод -->
+    <div id="xss-step2" class="card hidden fade-up">
+      <h2>Шаг 2: Безопасный ввод</h2>
+      <p>Теперь экранируем специальные символы, чтобы скрипт не выполнился.</p>
+      <input type="text" id="commentFieldSafe" placeholder="Ваш комментарий..."/>
+      <button id="submitCommentSafe" class="action-btn">Отправить</button>
+
+      <div class="info-box info-solution" style="margin-top:1rem;">
+        <strong>Что делаем:</strong>
+        <ul class="vuln-list">
+          <li>Заменяем &lt; на &amp;lt;, &gt; на &amp;gt;, &amp; на &amp;amp;</li>
+          <li>Используем <code>textContent</code> вместо <code>innerHTML</code></li>
+        </ul>
+      </div>
+
+      <h3 style="margin-top:1.5rem;">Вывод комментария (безопасно):</h3>
+      <div id="commentOutputSafe" class="info-box" style="margin-top:0.5rem;">
+        <div id="commentContentSafe"></div>
+      </div>
+    </div>
+
+    <!-- Доп.блоки, пример эксплуатации, подробности -->
+    <div class="card fade-up" style="animation-delay:0.2s;">
+      <h2>Пример реальной эксплуатации</h2>
+      <p>... (любой дополнительный контент)</p>
+    </div>
+
+  </div> <!-- /container -->
+
+  <script src="../script.js"></script>
+</body>
+</html>

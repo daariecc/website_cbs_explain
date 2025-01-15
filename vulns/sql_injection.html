@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SQL Injection — Учебный пример</title>
-  <!-- Путь к вашему файлу стилей -->
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -16,16 +15,11 @@
     </div>
   </header>
 
-  <!-- Навигация (с подложкой sub-nav) -->
+  <!-- Панель навигации (кнопка "На главную" + шаги) -->
   <div class="sub-nav">
-    <!-- Кнопка "На главную" -->
-    <button class="back-btn" onclick="location.href='../index.html'">
-      На главную
-    </button>
+    <button class="back-btn" onclick="location.href='../index.html'">На главную</button>
 
-    <!-- Кнопки переключения шагов -->
     <div class="step-nav">
-      <!-- Обратите внимание на data-step -->
       <button class="step-btn active" data-step="input-screen">1</button>
       <button class="step-btn" data-step="normal-result">2</button>
       <button class="step-btn" data-step="injection-screen">3</button>
@@ -33,14 +27,13 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container fade-in">
     <div class="page-intro">
       <p>Пошаговый сценарий, демонстрирующий, как работает SQL Injection.</p>
     </div>
 
-    <!-- ШАГ 1 -->
-    <!-- Задаём класс visible для первого шага (остальные hidden) -->
-    <div id="input-screen" class="card visible">
+    <!-- Шаг 1 -->
+    <div id="input-screen" class="card visible fade-up">
       <h2>Шаг 1: Обычный ввод</h2>
       <p>
         Представим, что у нас есть форма авторизации по имени пользователя. Разработчик 
@@ -54,8 +47,8 @@
       </p>
     </div>
 
-    <!-- ШАГ 2 -->
-    <div id="normal-result" class="card hidden">
+    <!-- Шаг 2 -->
+    <div id="normal-result" class="card hidden fade-up">
       <h2>Шаг 2: Нормальный результат</h2>
       <p>Если пользователь "john" существует в базе, вы авторизуетесь без проблем.</p>
       <div class="info-box info-normal">
@@ -68,16 +61,13 @@
         <div class="code-sample">
           SELECT * FROM users WHERE username='john'
         </div>
-        Здесь всё выглядит безопасно, 
-        так как пользовательский ввод "john" не меняет структуру запроса.
+        Пользовательский ввод "john" не меняет структуру запроса.
       </div>
-      <button id="showAttackBtn" class="action-btn">
-        Перейти к вредоносному вводу
-      </button>
+      <button id="showAttackBtn" class="action-btn">Перейти к вредоносному вводу</button>
     </div>
 
-    <!-- ШАГ 3 -->
-    <div id="injection-screen" class="card hidden">
+    <!-- Шаг 3 -->
+    <div id="injection-screen" class="card hidden fade-up">
       <h2>Шаг 3: Вредоносный ввод</h2>
       <p>Злоумышленник вводит не просто имя, а фрагмент SQL-кода:</p>
       <div class="code-sample">
@@ -90,28 +80,60 @@
       </p>
     </div>
 
-    <!-- ШАГ 4 -->
-    <div id="attack-result" class="card hidden">
+    <!-- Шаг 4 -->
+    <div id="attack-result" class="card hidden fade-up">
       <h2>Шаг 4: Результат SQL Injection</h2>
       <div class="info-box info-critical">
         <strong>Критическая ситуация:</strong><br>
-        Запрос теперь выглядит так:
+        Запрос стал выглядеть так:
         <div class="code-sample">
           SELECT * FROM users WHERE username='john' OR '1'='1'
         </div>
-        Условие '1'='1' всегда истинно, 
-        поэтому возвращаются все записи из базы, а не только «john».
+        Условие '1'='1' всегда истинно, значит возвращаются все записи из базы.
       </div>
       <div class="info-box info-solution" style="margin-top:1.5rem;">
         <strong>Решение:</strong><br>
-        Используйте параметризованные запросы, ORM-библиотеки 
-        или фильтрацию ввода, чтобы пользовательские данные не могли 
-        менять структуру SQL-запроса.
+        Используйте параметризованные запросы, ORM-библиотеки и валидацию, чтобы данные 
+        пользователя не могли менять структуру SQL-запроса.
       </div>
     </div>
-  </div>
 
-  <!-- Подключаем скрипт переключения шагов -->
+    <!-- Дополнительные блоки с материалами -->
+    <div class="card fade-up" style="animation-delay: 0.2s;">
+      <h2>Пример реальной эксплуатации</h2>
+      <p>
+        В 2012 году произошла утечка данных у известного сервиса из-за ошибки в фильтрации поля «Логин». 
+        Злоумышленники смогли ввести конструкцию <code>OR '1'='1</code>, 
+        что позволило получить список всех пользователей.
+      </p>
+      <p>Последствия:</p>
+      <ul class="vuln-list">
+        <li>Скомпрометированы персональные данные</li>
+        <li>Утрата доверия пользователей</li>
+        <li>Ущерб репутации и возможные судебные иски</li>
+      </ul>
+    </div>
+
+    <div class="card fade-up" style="animation-delay: 0.3s;">
+      <h2>Подробное объяснение</h2>
+      <p>
+        При обработке формы логина, сервер может формировать запрос вида:
+      </p>
+      <div class="code-sample">
+        SELECT * FROM users WHERE username='$userInput'
+      </div>
+      <p>
+        Если <code>$userInput</code> содержит не только имя пользователя, но и логический оператор <code>OR</code>, 
+        можно изменить условие таким образом, что запрос вернёт все строки.
+      </p>
+      <p>
+        Без использования параметризованных запросов (например, Prepared Statements) введённые данные 
+        фактически «склеиваются» со строкой SQL и меняют логику.
+      </p>
+    </div>
+
+  </div> <!-- /container -->
+
   <script src="../script.js"></script>
 </body>
 </html>

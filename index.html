@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Обучающая платформа по веб-уязвимостям</title>
+  <title>Обучающая платформа: Веб-уязвимости</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,38 +15,49 @@
     </div>
   </header>
 
-  <div class="container">
+  <div class="container fade-in">
     <div class="page-intro">
-      <p>Ниже перечислены демо-примеры уязвимостей. Выберите нужный вам сценарий.</p>
+      <p>
+        Добро пожаловать! Ниже представлены наиболее распространённые уязвимости.
+        Нажмите «Подробнее», чтобы посмотреть пошаговые примеры их эксплуатации 
+        и способы защиты.
+      </p>
     </div>
 
-    <!-- Пример: SQL Injection, переходит на sql_injection.html или разбивку на несколько страниц -->
-    <div class="card vuln-card">
+    <!-- Карточка: SQL Injection -->
+    <div class="card vuln-card fade-up">
       <h2>SQL Injection</h2>
-      <p>Демонстрация классической уязвимости в случае отсутствия фильтрации и параметризации SQL-запросов.</p>
+      <p>
+        Возникает, когда данные пользователя напрямую вставляются в SQL-запрос 
+        без должной фильтрации и параметризации. Это позволяет злоумышленнику 
+        менять логику запроса и получать доступ к конфиденциальным данным.
+      </p>
       <button class="action-btn" onclick="location.href='vulns/sql_injection.html'">
         Подробнее
       </button>
     </div>
 
-    <!-- XSS: если хотим показать два «шага» (небезопасный / безопасный) — 
-         можно просто сделать две кнопки для каждой «страницы/шага». -->
-    <div class="card vuln-card">
+    <!-- Карточка: XSS -->
+    <div class="card vuln-card fade-up" style="animation-delay: 0.2s;">
       <h2>XSS (Cross-Site Scripting)</h2>
       <p>
-        Демонстрация внедрения пользовательского JS-кода при отсутствии экранирования в HTML.
+        Позволяет внедрять чужой JavaScript-код в страницы, которые видят другие пользователи. 
+        Чаще всего возникает при некорректном выводе пользовательского ввода в HTML.
       </p>
-      <p><strong>Шаг 1:</strong> небезопасный ввод</p>
-      <button class="action-btn" onclick="location.href='vulns/xss_insecure.html'">
-        Перейти к Шагу 1
-      </button>
-      <p style="margin-top:1rem;"><strong>Шаг 2:</strong> безопасный ввод</p>
-      <button class="action-btn" onclick="location.href='vulns/xss_secure.html'">
-        Перейти к Шагу 2
+      <button class="action-btn" onclick="location.href='vulns/xss.html'">
+        Подробнее
       </button>
     </div>
 
   </div>
+
+  <!-- Футер с ссылкой на Telegram -->
+  <footer class="footer-bar fade-in-up">
+    <p>
+      Связаться со мной: 
+      <a href="https://t.me/scbdq" target="_blank" class="tg-link">@scbdq</a>
+    </p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

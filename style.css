@@ -1,13 +1,13 @@
 /* style.css */
 
-/* Сброс отступов/полей */
+/* Сброс отступов и box-sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Шрифты и цвета */
+/* Основной шрифт и фоновый цвет */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, sans-serif;
   background-color: #FEFFFF; /* Белый */
@@ -20,24 +20,22 @@ body {
 /* Верхняя плашка */
 .top-bar {
   width: 100%;
-  background-color: #582FF5; /* яркий фиолетовый */
+  background-color: #582FF5; /* фиолетовый */
   padding: 12px 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-
 .top-bar__inner {
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 20px;
 }
-
 .top-bar__title {
-  color: #FEFFFF; /* контраст с фиолетовым */
+  color: #FEFFFF;
   font-weight: 600;
   font-size: 1.6rem;
 }
 
-/* Основной контейнер */
+/* Контейнер */
 .container {
   max-width: 900px;
   width: 100%;
@@ -45,11 +43,27 @@ body {
   padding: 0 20px;
 }
 
-/* Вступительный текст */
-.page-intro {
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-  color: #1F1E1E;
+/* Анимация появления */
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+.fade-up {
+  animation: fadeUp 0.7s ease forwards;
+  opacity: 0;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Карточки */
@@ -61,21 +75,9 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Карточки уязвимостей на главной */
-.vuln-card h2 {
-  margin-bottom: 0.5rem;
-}
-
-.hidden {
-  display: none;
-}
-.visible {
-  display: block;
-}
-
 /* Кнопка действия */
 .action-btn {
-  background: #F88DD5; /* яркий розовый */
+  background: #F88DD5; /* розовый */
   color: #333;
   border: none;
   padding: 10px 20px;
@@ -91,32 +93,14 @@ body {
   transform: translateY(-1px);
 }
 
-/* Поля ввода */
-input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-/* Подписи к полям */
-.label {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  display: block;
-  color: #1F1E1E;
-}
-
-/* Подсказки */
-.note {
-  font-size: 0.9rem;
-  color: #666;
+/* Вспомогательные стили для списков */
+.vuln-list {
+  list-style: disc;
+  margin-left: 1.2rem;
   margin-top: 0.5rem;
 }
 
-/* Информационные блоки */
+/* Инфоблоки */
 .info-box {
   margin-top: 1rem;
   padding: 10px;
@@ -124,7 +108,6 @@ input[type="text"] {
   line-height: 1.5;
   font-size: 0.95rem;
 }
-
 .info-normal {
   background: #E7F9E7; 
   border: 1px solid #BDE8BD;
@@ -142,7 +125,7 @@ input[type="text"] {
   border: 1px solid #BDE8BD;
 }
 
-/* Кодовые фрагменты */
+/* Код */
 .code-sample {
   background: #F0F0F0;
   font-family: Menlo, Consolas, monospace;
@@ -153,9 +136,35 @@ input[type="text"] {
   overflow-x: auto;
 }
 
-/* ... предыдущие стили ... */
+/* Метки и поля */
+.label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
 
-/* Дополнительная панель под шапкой */
+/* Сокрытие / Показ */
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+/* Навигация под шапкой */
 .sub-nav {
   display: flex;
   align-items: center;
@@ -182,15 +191,13 @@ input[type="text"] {
   transform: translateY(-1px);
 }
 
-/* Контейнер для кнопок шагов */
+/* Меню шагов */
 .step-nav {
   display: flex;
   gap: 5px;
 }
-
-/* Кнопки шагов */
 .step-btn {
-  background: #F88DD5; /* яркий розовый */
+  background: #F88DD5; 
   color: #333;
   border: none;
   padding: 6px 12px;
@@ -200,11 +207,9 @@ input[type="text"] {
   cursor: pointer;
   transition: background 0.2s ease;
 }
-
 .step-btn:hover {
   background: #e671c3;
 }
-
 .step-btn.active {
   background: #E0F541; /* неоновый зелёный */
   color: #333;
@@ -212,47 +217,55 @@ input[type="text"] {
   outline: 2px solid #bcd821;
 }
 
-/* Пример доп. стилей, если ещё не было */
-.sub-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
+/* Футер */
+.footer-bar {
+  margin-top: auto; 
+  padding: 20px;
   background: #FEFFFF;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: center;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+  animation: fadeInUp 0.7s ease forwards;
+  opacity: 0;
 }
-
-.back-btn {
-  background: #E0F541; /* неоновый зелёный */
-  color: #333;
-  border: none;
-  padding: 8px 12px;
+@keyframes fadeInUp {
+  0% {
+    opacity: 0; 
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+.footer-bar p {
   font-size: 0.95rem;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
 }
-.back-btn:hover {
-  background: #c8e52c;
-  transform: translateY(-1px);
+.tg-link {
+  color: #582FF5;
+  text-decoration: underline;
 }
-
+.tg-link:hover {
+  color: #4222c5;
+}
 
 /* Адаптивность */
 @media (max-width: 600px) {
-  .sub-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .top-bar__title {
+    font-size: 1.3rem;
   }
-  .step-nav {
-    gap: 3px;
+  .container {
+    margin-top: 80px;
+    padding: 0 10px;
+  }
+  .card {
+    padding: 20px;
   }
   .step-btn {
     font-size: 0.8rem;
     padding: 5px 8px;
   }
+  .back-btn {
+    font-size: 0.85rem;
+    padding: 6px 8px;
+  }
 }
-
-
