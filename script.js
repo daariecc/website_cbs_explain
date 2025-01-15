@@ -1,88 +1,67 @@
 // script.js
 
-/* ---------------------------------------
-   1. SQL Injection (шаги 1..4)
----------------------------------------- */
+/* ============== SQL Injection (шаги) ============== */
+const inputScreen = document.getElementById('input-screen');
+const normalResult = document.getElementById('normal-result');
+const injectionScreen = document.getElementById('injection-screen');
+const attackResult = document.getElementById('attack-result');
 
-// Собираем ссылки на экраны для SQL Injection
-const inputScreen       = document.getElementById('input-screen');
-const normalResult      = document.getElementById('normal-result');
-const injectionScreen   = document.getElementById('injection-screen');
-const attackResult      = document.getElementById('attack-result');
+const loginBtn      = document.getElementById('loginBtn');
+const showAttackBtn = document.getElementById('showAttackBtn');
+const attackBtn     = document.getElementById('attackBtn');
 
-// Кнопки внутри сценария SQL Injection
-const loginBtn         = document.getElementById('loginBtn');
-const showAttackBtn    = document.getElementById('showAttackBtn');
-const attackBtn        = document.getElementById('attackBtn');
+/* ============== XSS (2 шага) ============== */
+// Шаг 1 (небезопасный)
+const commentField    = document.getElementById('commentField');
+const submitComment   = document.getElementById('submitComment');
+const commentContent  = document.getElementById('commentContent');
 
-/* ---------------------------------------
-   2. XSS: Небезопасный ввод
----------------------------------------- */
-const commentField     = document.getElementById('commentField');
-const submitComment    = document.getElementById('submitComment');
-const commentContent   = document.getElementById('commentContent');
+// Шаг 2 (безопасный)
+const commentFieldSafe   = document.getElementById('commentFieldSafe');
+const submitCommentSafe  = document.getElementById('submitCommentSafe');
+const commentContentSafe = document.getElementById('commentContentSafe');
 
-/* ---------------------------------------
-   3. XSS: Безопасный ввод
----------------------------------------- */
-const commentFieldSafe    = document.getElementById('commentFieldSafe');
-const submitCommentSafe   = document.getElementById('submitCommentSafe');
-const commentContentSafe  = document.getElementById('commentContentSafe');
-
-/* ---------------------------------------
-   4. Общая логика переключения шагов
----------------------------------------- */
-
-// Кнопки навигации по шагам (1,2,3,4, возможно 1,2 для XSS)
-const stepButtons = document.querySelectorAll('.step-btn');
-
-// Объединяем экраны SQLI в объект (если они есть)
+/* ============== Собираем экраны в объект ============== */
 const screens = {
+  // SQL
   'input-screen': inputScreen,
   'normal-result': normalResult,
   'injection-screen': injectionScreen,
-  'attack-result': attackResult
-  // Если в будущем будут экраны для XSS с шагами, можно сюда добавить:
-  // 'xss-step1': xssStep1,
-  // 'xss-step2': xssStep2,
-  // и т.д.
+  'attack-result': attackResult,
+  // XSS
+  'xss-step1': document.getElementById('xss-step1'),
+  'xss-step2': document.getElementById('xss-step2')
 };
 
-/* ---------------------------------------
-   Функция showScreen(screenId)
-   - скрывает все блоки из 'screens'
-   - показывает только нужный
-   - назначает "active" на соответствующую кнопку
----------------------------------------- */
+/* ============== Кнопки навигации (шаги) ============== */
+const stepButtons = document.querySelectorAll('.step-btn');
+
+/* ============== Функция переключения экранов ============== */
 function showScreen(screenId) {
-  // Скрываем все
+  // Скрыть все
   for (const key in screens) {
     if (screens[key]) {
       screens[key].classList.add('hidden');
       screens[key].classList.remove('visible');
     }
   }
-  // Показываем нужный
+  // Показать нужный
   if (screens[screenId]) {
     screens[screenId].classList.remove('hidden');
     screens[screenId].classList.add('visible');
   }
-
-  // Обновляем "active" у кнопок
+  // Активная кнопка
   stepButtons.forEach(btn => {
     btn.classList.remove('active');
     if (btn.dataset.step === screenId) {
       btn.classList.add('active');
     }
   });
-
-  // Скроллим наверх, чтобы пользователь видел начало блока
+  // Прокрутка к верху
   window.scrollTo(0,0);
 }
 
-/* ---------------------------------------
-   5. SQL Injection: Вешаем обработчики
----------------------------------------- */
+/* ============== Обработчики для SQL Injection ============== */
 if (loginBtn) {
   loginBtn.addEventListener('click', () => {
     showScreen('normal-result');
@@ -99,39 +78,36 @@ if (attackBtn) {
   });
 }
 
-/* ---------------------------------------
-   6. XSS: Небезопасный ввод
----------------------------------------- */
-if (commentField && submitComment && commentContent) {
+/* ============== XSS: Небезопасный ввод (Шаг 1) ============== */
+if (submitComment && commentField && commentContent) {
   submitComment.addEventListener('click', () => {
-    // Небезопасно: вставляем как есть
+    // Вставляем как есть
     commentContent.innerHTML = commentField.value;
+    // Уведомление о срабатывании небезопасного кода
+    if (commentField.value.toLowerCase().includes("<script>")) {
+      alert("Небезопасный ввод сработал! Ваш скрипт был исполнен.");
+    }
   });
 }
 
-/* ---------------------------------------
-   7. XSS: Безопасный ввод
----------------------------------------- */
-if (commentFieldSafe && submitCommentSafe && commentContentSafe) {
+/* ============== XSS: Безопасный ввод (Шаг 2) ============== */
+if (submitCommentSafe && commentFieldSafe && commentContentSafe) {
   submitCommentSafe.addEventListener('click', () => {
-    const userInput = commentFieldSafe.value;
-    // Экранируем спецсимволы
-    const safeOutput = userInput
+    const userText = commentFieldSafe.value;
+    // Простейшая экранизация
+    const safeOutput = userText
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
-    // Выводим экранированный текст
     commentContentSafe.innerHTML = safeOutput;
   });
 }
 
-/* ---------------------------------------
-   8. Обработчики на кнопках меню шагов
----------------------------------------- */
+/* ============== Навигация (1..4, 1..2) ============== */
 stepButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    const targetStep = btn.dataset.step;
-    showScreen(targetStep);
+    const target = btn.dataset.step;
+    showScreen(target);
   });
 });

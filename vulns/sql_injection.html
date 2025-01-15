@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SQL Injection — Учебный пример</title>
   <link rel="stylesheet" href="../style.css">
 </head>
@@ -15,10 +15,11 @@
     </div>
   </header>
 
-  <!-- Панель навигации (кнопка "На главную" + шаги) -->
+  <!-- Меню навигации: На главную + Шаги 1..4 -->
   <div class="sub-nav">
-    <button class="back-btn" onclick="location.href='../index.html'">На главную</button>
-
+    <button class="back-btn" onclick="location.href='../index.html'">
+      На главную
+    </button>
     <div class="step-nav">
       <button class="step-btn active" data-step="input-screen">1</button>
       <button class="step-btn" data-step="normal-result">2</button>
@@ -29,110 +30,105 @@
 
   <div class="container fade-in">
     <div class="page-intro">
-      <p>Пошаговый сценарий, демонстрирующий, как работает SQL Injection.</p>
+      <p>Ниже показаны четыре шага, демонстрирующие механику эксплуатации SQL Injection и реальный инцидент.</p>
     </div>
 
     <!-- Шаг 1 -->
     <div id="input-screen" class="card visible fade-up">
       <h2>Шаг 1: Обычный ввод</h2>
       <p>
-        Представим, что у нас есть форма авторизации по имени пользователя. Разработчик 
-        не применил фильтрацию введённых данных. Попробуйте ввести обычное имя, например <em>john</em>.
+        На этом шаге просто показываем, что при вводе обычного имени 
+        (например, "john") всё работает штатно.
       </p>
       <label class="label" for="usernameInput">Введите имя пользователя:</label>
       <input type="text" id="usernameInput" placeholder="например, john"/>
       <button id="loginBtn" class="action-btn">Войти</button>
-      <p class="note">
-        После этого мы покажем, что произойдёт при вредоносном вводе.
-      </p>
+
+      <div class="info-box info-warning" style="margin-top:1rem;">
+        <strong>Комментарий к шагу 1:</strong>
+        <p>Сейчас мы не используем вредоносный код, поэтому всё безопасно.</p>
+      </div>
     </div>
 
     <!-- Шаг 2 -->
     <div id="normal-result" class="card hidden fade-up">
       <h2>Шаг 2: Нормальный результат</h2>
-      <p>Если пользователь "john" существует в базе, вы авторизуетесь без проблем.</p>
+      <p>Если пользователь "john" действительно есть в базе, авторизация успешна.</p>
+
       <div class="info-box info-normal">
         <strong>Результат:</strong><br>
         Добро пожаловать, john!
       </div>
+
       <div class="info-box info-warning" style="margin-top:1.5rem;">
-        <strong>Что произошло без инъекции:</strong><br>
-        Запрос к базе данных был:
-        <div class="code-sample">
-          SELECT * FROM users WHERE username='john'
-        </div>
-        Пользовательский ввод "john" не меняет структуру запроса.
+        <strong>Комментарий к шагу 2:</strong>
+        <p>
+          Запрос к базе выглядит так:
+          <div class="code-sample">
+            SELECT * FROM users WHERE username='john'
+          </div>
+          Пока всё штатно: логика запроса не изменена.
+        </p>
       </div>
-      <button id="showAttackBtn" class="action-btn">Перейти к вредоносному вводу</button>
+
+      <button id="showAttackBtn" class="action-btn">
+        Перейти к вредоносному вводу
+      </button>
     </div>
 
     <!-- Шаг 3 -->
     <div id="injection-screen" class="card hidden fade-up">
       <h2>Шаг 3: Вредоносный ввод</h2>
-      <p>Злоумышленник вводит не просто имя, а фрагмент SQL-кода:</p>
+      <p>
+        На этом шаге вводим фрагмент SQL-кода, меняющий условие выборки.
+      </p>
       <div class="code-sample">
         john' OR '1'='1
       </div>
       <input type="text" id="evilInput" value="john' OR '1'='1"/>
       <button id="attackBtn" class="action-btn">Войти</button>
-      <p class="note">
-        Нажмите «Войти», чтобы увидеть последствия.
-      </p>
+
+      <div class="info-box info-warning" style="margin-top:1rem;">
+        <strong>Комментарий к шагу 3:</strong>
+        <p>
+          Вместо обычного имени теперь есть логический оператор OR, 
+          что может вернуть все записи из таблицы.
+        </p>
+      </div>
     </div>
 
     <!-- Шаг 4 -->
     <div id="attack-result" class="card hidden fade-up">
       <h2>Шаг 4: Результат SQL Injection</h2>
       <div class="info-box info-critical">
-        <strong>Критическая ситуация:</strong><br>
-        Запрос стал выглядеть так:
+        <strong>Механика:</strong><br>
         <div class="code-sample">
           SELECT * FROM users WHERE username='john' OR '1'='1'
         </div>
-        Условие '1'='1' всегда истинно, значит возвращаются все записи из базы.
+        Условие '1'='1' всегда истинно, значит запрос вернёт все записи.
       </div>
+
       <div class="info-box info-solution" style="margin-top:1.5rem;">
         <strong>Решение:</strong><br>
-        Используйте параметризованные запросы, ORM-библиотеки и валидацию, чтобы данные 
-        пользователя не могли менять структуру SQL-запроса.
+        Параметризовать запросы, экранировать ввод, использовать ORM.
+      </div>
+
+      <!-- Реальный инцидент на последнем шаге -->
+      <div class="card fade-up" style="margin-top:1.5rem;">
+        <h2>Пример реальной эксплуатации</h2>
+        <p>В 2012 году произошла утечка данных у известного сервиса из-за ошибки в фильтрации «Логина».</p>
+        <p>
+          Злоумышленники смогли ввести конструкцию <code>OR '1'='1</code>, 
+          что позволило получить список всех пользователей.
+        </p>
+        <ul class="vuln-list">
+          <li>Скомпрометированы персональные данные</li>
+          <li>Утрата доверия пользователей</li>
+          <li>Ущерб репутации и возможные судебные иски</li>
+        </ul>
       </div>
     </div>
-
-    <!-- Дополнительные блоки с материалами -->
-    <div class="card fade-up" style="animation-delay: 0.2s;">
-      <h2>Пример реальной эксплуатации</h2>
-      <p>
-        В 2012 году произошла утечка данных у известного сервиса из-за ошибки в фильтрации поля «Логин». 
-        Злоумышленники смогли ввести конструкцию <code>OR '1'='1</code>, 
-        что позволило получить список всех пользователей.
-      </p>
-      <p>Последствия:</p>
-      <ul class="vuln-list">
-        <li>Скомпрометированы персональные данные</li>
-        <li>Утрата доверия пользователей</li>
-        <li>Ущерб репутации и возможные судебные иски</li>
-      </ul>
-    </div>
-
-    <div class="card fade-up" style="animation-delay: 0.3s;">
-      <h2>Подробное объяснение</h2>
-      <p>
-        При обработке формы логина, сервер может формировать запрос вида:
-      </p>
-      <div class="code-sample">
-        SELECT * FROM users WHERE username='$userInput'
-      </div>
-      <p>
-        Если <code>$userInput</code> содержит не только имя пользователя, но и логический оператор <code>OR</code>, 
-        можно изменить условие таким образом, что запрос вернёт все строки.
-      </p>
-      <p>
-        Без использования параметризованных запросов (например, Prepared Statements) введённые данные 
-        фактически «склеиваются» со строкой SQL и меняют логику.
-      </p>
-    </div>
-
-  </div> <!-- /container -->
+  </div>
 
   <script src="../script.js"></script>
 </body>
